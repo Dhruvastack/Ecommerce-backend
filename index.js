@@ -13,10 +13,12 @@ const authRoutes = require("./src/routes/auth");
 const adminRoutes = require("./src/routes/admin/auth");
 const categoryRoutes = require("./src/routes/category");
 const productRoutes = require("./src/routes/product");
+const cartRoutes = require("./src/routes/cart");
 app.use("/api", authRoutes); //for having api prefix with all routes
 app.use("/api", adminRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
+app.use("/api", cartRoutes);
 
 
 

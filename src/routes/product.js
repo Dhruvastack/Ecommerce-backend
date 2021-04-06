@@ -10,17 +10,28 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./uploads/");
   },
+
   filename: function (req, file, cb) {
-    cb(null, nanoid(10) + "-" + file.originalname + Date.now());
+    cb(null, nanoid() + "-" + Date.now() + file.originalname);
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+
+  fileFilter: function (req, file, callback) {
+    if (!file.originalname.match(/\.(jpeg|jpg|png)$/)) {
+      callback(new Error("only upload files with jpg or jpeg or png format."));
+    }
+    callback(null, true);
+  },
+});
+
 router.post(
   "/product/create",
   requireSignin,
   adminMiddleware,
-  upload.single("productPictures"),
+  upload.array("productPictures"),
   addProduct
 );
 router.get("/product/all", getProducts);
